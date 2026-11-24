@@ -1,4 +1,5 @@
 from config import * 
+from sprites import Player, Richard
 
 
 class Game:
@@ -10,6 +11,9 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.running = True
+
+        self.player = Player((WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 + 100), [])
+        self.richard = Richard((WINDOW_WIDTH//2 + 500, WINDOW_HEIGHT//2 + 50), [])
 
         self.setup()
 
@@ -36,6 +40,10 @@ class Game:
             self.display_surface.blit(self.bg, (0,0))
             self.display_surface.blit(self.midg, (0,0))
             self.display_surface.blit(self.foreg, (0,0))
+
+
+            self.display_surface.blit(self.player.image, self.player.rect)
+            self.display_surface.blit(self.richard.image, self.richard.rect)
 
             pygame.display.update()
 
