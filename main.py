@@ -36,12 +36,13 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
 
+            dt = self.clock.tick() / 1000
 
             self.display_surface.blit(self.bg, (0,0))
             self.display_surface.blit(self.midg, (0,0))
             self.display_surface.blit(self.foreg, (0,0))
 
-
+            self.player.update(dt)
             self.display_surface.blit(self.player.image, self.player.rect)
             self.display_surface.blit(self.richard.image, self.richard.rect)
 
