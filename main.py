@@ -1,5 +1,6 @@
 from config import * 
 from sprites import Player, Richard
+import json
 
 
 class Game:
@@ -11,14 +12,22 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.running = True
+        self.score = 0
+        self.highscore = 0
 
         self.player = Player((WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 + 100), [])
         self.richard = Richard((WINDOW_WIDTH//2 + 500, WINDOW_HEIGHT//2 + 50), [])
 
+
         self.setup()
 
 
+
     def setup(self):
+
+        if os.path.exists("score.json"):
+            with open("score.json", "r") as highscore :
+                  self.highscore = json.load(highscore)["HIGH_SCORE"]
 
         self.bg = pygame.image.load(os.path.join(BASE_DIR, 'data', 'images', 'Background.png')).convert_alpha()
         self.bg = pygame.transform.scale(self.bg,(WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -36,7 +45,6 @@ class Game:
             pygame.image.load(os.path.join(BASE_DIR, 'data', 'buttons', 'Incorrect.png')).convert_alpha()
         ]
 
-        
 
     def buttons (self):
         
@@ -75,7 +83,6 @@ class Game:
                  
 
 
-
     def run (self):
         self.clicking = False
         while self.running:
@@ -89,9 +96,26 @@ class Game:
 
             dt = self.clock.tick() / 1000
 
+            self.score += dt * 2
+
+            font = pygame.font.Font(None, 50)
+            timer = font.render(f"Score: {int(self.score)}", True, "Blue")
+
+            with open("score.json", "w") as highscore :
+                        json.dump({"HIGH_SCORE" : self.score}, highscore)
+                       
+
+            font = pygame.font.Font(None, 50)
+            highesttimer = font.render(f"High Score: {int(self.highscore)}", True, "Blue")
+
+            if self.highscore <= self.score :
+                 highesttimer = timer
+
             self.display_surface.blit(self.bg, (0,0))
             self.display_surface.blit(self.midg, (0,0))
             self.display_surface.blit(self.foreg, (0,0))
+            self.display_surface.blit(timer, ( 200,20))
+            self.display_surface.blit(highesttimer, ( 600,20))
 
             self.player.update(dt)
             self.display_surface.blit(self.player.image, self.player.rect)
@@ -99,6 +123,7 @@ class Game:
 
             self.buttons()
 
+            
             pygame.display.update()
 
 
