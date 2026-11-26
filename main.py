@@ -14,6 +14,8 @@ class Game:
         self.running = True
         self.score = 0
         self.highscore = 0
+        self.clicking = False
+        self.input = None
 
         self.player = Player((WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 + 100), [])
         self.richard = Richard((WINDOW_WIDTH//2 + 500, WINDOW_HEIGHT//2 + 50), [])
@@ -166,6 +168,17 @@ class Game:
 
             a, b, c = self.optionsforquest
 
+            if mouse_alligned_button1 and self.clicking:
+                self.input = a
+            elif mouse_alligned_button1 and self.clicking:
+                self.input = b
+            elif mouse_alligned_button1 and self.clicking:
+                self.input = c
+
+
+            if self.input == self.answerforquest :
+                print("correct")
+
             font = pygame.font.Font(None, 40)
             a = font.render(str(a), True, "Blue")
             a_rect = a.get_rect(center = (self.showbuttons_1.centerx - 0, self.showbuttons_1.centery + 20))
@@ -181,6 +194,9 @@ class Game:
             c_rect = c.get_rect(center = (self.showbuttons_3.centerx - 0, self.showbuttons_3.centery + 20))
             self.display_surface.blit(c, c_rect)
 
+            
+
+            
                  
     def questionsfunc(self):
 
