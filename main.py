@@ -85,12 +85,12 @@ class Game:
             "Ans17(2)" : [15,19,17],
             "F-test" : ["F-test","Mean","T-test"],
             "T-test" : ["Range","F-test","T-test"],
-            "Mean" : ["Standard Deviation","Mean","F-test"],
+            "Mean" : ["StdDeviation","Mean","F-test"],
             "Median_even" : ["Median_even","Mean","Var"],
             "Median_odd" : ["Mode","Median_even","Median_odd"],
             "Range" : ["Mean","Range","Mode"],
-            "STD" : ["Variance","Standard Deviation","T-test"],
-            "Var" : ["Range","Standard Deviation","Variance"],
+            "STD" : ["Variance","StdDeviation","T-test"],
+            "Var" : ["Range","StdDeviation","Variance"],
             "Modeexamp" : ["Mean","Mode","Range"],
             "Medianexamp" : ["Median","Mean","Variance"]
         }
@@ -121,6 +121,11 @@ class Game:
         )
 
         self.thequestion = random.choice(self.questions)
+
+        self.optionsforquest = self.options[self.thequestion]
+        self.answerforquest = self.answers[self.thequestion]
+
+        random.shuffle(self.optionsforquest)
         
 
 
@@ -158,16 +163,28 @@ class Game:
             self.display_surface.blit(self.showbuttons , self.showbuttons_1)
             self.display_surface.blit(self.showbuttons2 , self.showbuttons_2)
             self.display_surface.blit(self.showbuttons3 , self.showbuttons_3)
+
+            a, b, c = self.optionsforquest
+
+            font = pygame.font.Font(None, 40)
+            a = font.render(str(a), True, "Blue")
+            a_rect = a.get_rect(center = (self.showbuttons_1.centerx - 0, self.showbuttons_1.centery + 20))
+            self.display_surface.blit(a, a_rect)
+
+            font = pygame.font.Font(None, 40)
+            b = font.render(str(b), True, "Blue")
+            b_rect = b.get_rect(center = (self.showbuttons_2.centerx - 0, self.showbuttons_2.centery + 20))
+            self.display_surface.blit(b, b_rect)
+
+            font = pygame.font.Font(None, 40)
+            c = font.render(str(c), True, "Blue")
+            c_rect = c.get_rect(center = (self.showbuttons_3.centerx - 0, self.showbuttons_3.centery + 20))
+            self.display_surface.blit(c, c_rect)
+
                  
     def questionsfunc(self):
+
          
-        
-        options = self.options[self.thequestion]
-        answer = self.options[self.thequestion]
-
-        random.shuffle(options)
-
-
         if self.thequestion in self.questions_equations:
             image = self.questions_equations[self.thequestion]
         elif self.thequestion in self.questions_formulas:
@@ -178,6 +195,7 @@ class Game:
         image =  pygame.transform.scale(image, (250,100))
 
         self.display_surface.blit(image, self.richard.rect)
+
 
         
 
