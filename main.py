@@ -1,7 +1,7 @@
 from config import * 
 from sprites import Player, Richard
 import json
-
+import random
 
 class Game:
     def __init__(self):
@@ -45,6 +45,84 @@ class Game:
             pygame.image.load(os.path.join(BASE_DIR, 'data', 'buttons', 'Incorrect.png')).convert_alpha()
         ]
 
+        
+
+        self.questions_equations = {
+            "Ans7.5" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans7.5.png')).convert_alpha(),
+            "Ans12" :pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans12.png')).convert_alpha(),
+            "Ans13" :pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans13.png')).convert_alpha(),
+            "Ans17" :pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans17.png')).convert_alpha(),
+            "Ans17(2)" :pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans17(2).png')).convert_alpha()
+        }
+
+       
+
+        self.questions_formulas = {
+            "F-test" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Formulas', 'F-test.png')).convert_alpha(),
+            "T-test" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Formulas', 'T-test.png')).convert_alpha(),
+            "Mean" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Formulas', 'Mean.png')).convert_alpha(),
+            "Median_even" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Formulas', 'Median_even.png')).convert_alpha(),
+            "Median_odd" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Formulas', 'Median_odd.png')).convert_alpha(),
+            "Range" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Formulas', 'Range.png')).convert_alpha(),
+            "STD" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Formulas', 'STD.png')).convert_alpha(),
+            "Var" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Formulas', 'Var.png')).convert_alpha()
+        }
+
+       
+
+        self.questions_examples = {
+            "Modeexamp" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Examples', 'Modeexamp.png')).convert_alpha(),
+            "Medianexamp" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Examples', 'Medianexamp.png')).convert_alpha(),
+        }
+
+        
+        
+        self.options = {
+            "Ans7.5" : [7.5,9,5],
+            "Ans12" : [12,5,8],
+            "Ans13" : [8,9,13],
+            "Ans17" : [15,16,17],
+            "Ans17(2)" : [15,19,17],
+            "F-test" : ["F-test","Mean","T-test"],
+            "T-test" : ["Range","F-test","T-test"],
+            "Mean" : ["Standard Deviation","Mean","F-test"],
+            "Median_even" : ["Median_even","Mean","Var"],
+            "Median_odd" : ["Mode","Median_even","Median_odd"],
+            "Range" : ["Mean","Range","Mode"],
+            "STD" : ["Variance","Standard Deviation","T-test"],
+            "Var" : ["Range","Standard Deviation","Variance"],
+            "Modeexamp" : ["Mean","Mode","Range"],
+            "Medianexamp" : ["Median","Mean","Variance"]
+        }
+
+        self.answers = {
+            "Ans7.5" : "7.5",
+            "Ans12" : "12",
+            "Ans13" : "13",
+            "Ans17" : "17",
+            "Ans17(2)" : "17",
+            "F-test" : "F-test",
+            "T-test" : "T-test",
+            "Mean" : "Mean",
+            "Median_even" : "Median_even",
+            "Median_odd" : "Median_odd",
+            "Range" : "Range",
+            "STD" : "Standard Deviation",
+            "Var" : "Variance",
+            "Modeexamp" : "Mode",
+            "Medianexamp" : "Median"
+        }
+
+        self.questions = (
+                    list(self.questions_equations.keys()) +
+                    list(self.questions_formulas.keys()) +
+                    list(self.questions_examples.keys())
+        
+        )
+
+        self.thequestion = random.choice(self.questions)
+        
+
 
     def buttons (self):
         
@@ -81,7 +159,27 @@ class Game:
             self.display_surface.blit(self.showbuttons2 , self.showbuttons_2)
             self.display_surface.blit(self.showbuttons3 , self.showbuttons_3)
                  
+    def questionsfunc(self):
+         
+        
+        options = self.options[self.thequestion]
+        answer = self.options[self.thequestion]
 
+        random.shuffle(options)
+
+
+        if self.thequestion in self.questions_equations:
+            image = self.questions_equations[self.thequestion]
+        elif self.thequestion in self.questions_formulas:
+            image = self.questions_formulas[self.thequestion]
+        elif self.thequestion in self.questions_examples:
+            image = self.questions_examples[self.thequestion]
+
+        image =  pygame.transform.scale(image, (250,100))
+
+        self.display_surface.blit(image, self.richard.rect)
+
+        
 
     def run (self):
         self.clicking = False
@@ -106,7 +204,7 @@ class Game:
                        
 
             font = pygame.font.Font(None, 50)
-            highesttimer = font.render(f"High Score: {int(self.highscore)}", True, "Blue")
+            highesttimer = font.render(f"HighScore: {int(self.highscore)}", True, "Blue")
 
             if self.highscore <= self.score :
                  highesttimer = timer
@@ -121,8 +219,9 @@ class Game:
             self.display_surface.blit(self.player.image, self.player.rect)
             self.display_surface.blit(self.richard.image, self.richard.rect)
 
-            self.buttons()
 
+            self.buttons()
+            self.questionsfunc()
             
             pygame.display.update()
 
