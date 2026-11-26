@@ -98,18 +98,18 @@ class Game:
         }
 
         self.answers = {
-            "Ans7.5" : "7.5",
-            "Ans12" : "12",
-            "Ans13" : "13",
-            "Ans17" : "17",
-            "Ans17(2)" : "17",
+            "Ans7.5" : 7.5,
+            "Ans12" : 12,
+            "Ans13" : 13,
+            "Ans17" : 17,
+            "Ans17(2)" : 17,
             "F-test" : "F-test",
             "T-test" : "T-test",
             "Mean" : "Mean",
             "Median_even" : "Median_even",
             "Median_odd" : "Median_odd",
             "Range" : "Range",
-            "STD" : "Standard Deviation",
+            "STD" : "StdDeviation",
             "Var" : "Variance",
             "Modeexamp" : "Mode",
             "Medianexamp" : "Median"
@@ -135,6 +135,9 @@ class Game:
         
                 
             mouse_X, mouse_Y = pygame.mouse.get_pos()
+            
+
+
 
             self.showbuttons = self.buttonslist[0]
             self.showbuttons2 = self.buttonslist[0]
@@ -155,6 +158,29 @@ class Game:
                 self.showbuttons2 = self.buttonslist[1]
             elif mouse_alligned_button3 :
                 self.showbuttons3 = self.buttonslist[1]
+
+            a, b, c = self.optionsforquest
+            
+            if mouse_alligned_button1 and self.clicking:
+                self.input = a
+                
+                
+            elif mouse_alligned_button2 and self.clicking:
+                self.input = b
+                
+            elif mouse_alligned_button3 and self.clicking:
+                self.input = c
+                
+            print(self.input)
+            print(self.answerforquest)
+
+            if self.input == self.answerforquest :
+                print("correct")
+                self.showbuttons = self.buttonslist[2]
+            elif self.input == None:
+                pass
+            else:
+                    print("incorrect")
             
 
 
@@ -166,18 +192,8 @@ class Game:
             self.display_surface.blit(self.showbuttons2 , self.showbuttons_2)
             self.display_surface.blit(self.showbuttons3 , self.showbuttons_3)
 
-            a, b, c = self.optionsforquest
-
-            if mouse_alligned_button1 and self.clicking:
-                self.input = a
-            elif mouse_alligned_button1 and self.clicking:
-                self.input = b
-            elif mouse_alligned_button1 and self.clicking:
-                self.input = c
-
-
-            if self.input == self.answerforquest :
-                print("correct")
+            
+                
 
             font = pygame.font.Font(None, 40)
             a = font.render(str(a), True, "Blue")
