@@ -17,6 +17,8 @@ class Game:
         self.clicking = False
         self.input = None
 
+        self.buttonpressed = 0
+
         self.player = Player((WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 + 100), [])
         self.richard = Richard((WINDOW_WIDTH//2 + 500, WINDOW_HEIGHT//2 + 50), [])
 
@@ -159,28 +161,54 @@ class Game:
             elif mouse_alligned_button3 :
                 self.showbuttons3 = self.buttonslist[1]
 
-            a, b, c = self.optionsforquest
-            
-            if mouse_alligned_button1 and self.clicking:
-                self.input = a
-                
-                
-            elif mouse_alligned_button2 and self.clicking:
-                self.input = b
-                
-            elif mouse_alligned_button3 and self.clicking:
-                self.input = c
-                
+
             print(self.input)
             print(self.answerforquest)
-
-            if self.input == self.answerforquest :
-                print("correct")
-                self.showbuttons = self.buttonslist[2]
-            elif self.input == None:
-                pass
-            else:
-                    print("incorrect")
+            a, b, c = self.optionsforquest
+            
+            if mouse_alligned_button1 and self.clicking and self.buttonpressed == 0:
+                self.input = a
+                self.buttonpressed = 1
+                
+            elif mouse_alligned_button2 and self.clicking and self.buttonpressed == 0:
+                self.input = b
+                self.buttonpressed = 2
+      
+            elif mouse_alligned_button3 and self.clicking and self.buttonpressed == 0:
+                self.input = c
+                self.buttonpressed = 3
+                
+            if self.buttonpressed == 1:   
+                if self.input == self.answerforquest :
+                    print("correct")
+                    self.showbuttons = self.buttonslist[2]
+                elif self.input == None:
+                    pass
+                else: 
+                    print("inc")
+                    self.showbuttons = self.buttonslist[3]
+                
+            elif self.buttonpressed == 2: 
+                if self.input == self.answerforquest :
+                    print("correct")
+                    self.showbuttons2 = self.buttonslist[2]
+                elif self.input == None:
+                    pass
+                else: 
+                    print("inc")
+                    self.showbuttons2 = self.buttonslist[3]
+            elif self.buttonpressed == 3:
+                if self.input == self.answerforquest :
+                    print("correct")
+                    self.showbuttons3 = self.buttonslist[2]
+                elif self.input == None:
+                    pass
+                else: 
+                    print("inc")
+                    self.showbuttons3 = self.buttonslist[3]
+           
+            
+            
             
 
 
