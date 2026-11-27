@@ -18,11 +18,14 @@ class Game:
         self.clicking = False
         self.input = None
         self.questionanswered = 0
+        self.delayBetweenQuest = 0
 
         self.buttonpressed = 0
 
         self.player = Player((WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 + 100), [])
         self.richard = Richard((WINDOW_WIDTH//2 + 500, WINDOW_HEIGHT//2 + 50), [])
+
+        
 
 
         self.setup()
@@ -168,6 +171,8 @@ class Game:
             print(self.input)
             print(self.answerforquest)
             a, b, c = self.optionsforquest
+
+            #assign self.input on button press
             
             if mouse_alligned_button1 and self.clicking and self.buttonpressed == 0:
                 self.input = a
@@ -183,7 +188,7 @@ class Game:
 
 
 
-
+            #button press anf if correct and incorrect chnge button image respectively
                 
             if self.buttonpressed == 1:   
                 if self.input == self.answerforquest :
@@ -219,17 +224,27 @@ class Game:
                     print("inc")
                     self.showbuttons3 = self.buttonslist[3]
 
-            if self.input == self.answerforquest :
-               
+
+
+
+            if self.input == self.answerforquest and self.delayBetweenQuest == 0 :
+                self.delayBetweenQuest = pygame.time.get_ticks()
                 self.questionanswered += 1
-                self.nextquest()
+ 
+                
                 
             elif self.input == None:
                 
                 pass
 
             
+            if self.delayBetweenQuest != 0 : #delayy before nect question
+                    elapsed = pygame.time.get_ticks() - self.delayBetweenQuest 
 
+                    if elapsed >= 1000 :
+                            self.nextquest()
+                            self.delayBetweenQuest = 0
+            
 
             self.showbuttons = pygame.transform.scale(self.showbuttons, (300,200))
             self.showbuttons2 = pygame.transform.scale(self.showbuttons2, (300,200))
@@ -281,6 +296,8 @@ class Game:
         self.questionsfunc()
         
     def run (self):
+
+
         self.clicking = False
         while self.running:
             for event in pygame.event.get():
@@ -313,6 +330,8 @@ class Game:
 
             font = pygame.font.Font(None, 50)
             star = font.render(f"Star: {int(self.questionanswered)}", True, "Blue")
+
+
 
             self.display_surface.blit(self.bg, (0,0))
             self.display_surface.blit(self.midg, (0,0))
