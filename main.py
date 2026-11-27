@@ -19,6 +19,8 @@ class Game:
         self.input = None
         self.questionanswered = 0
         self.delayBetweenQuest = 0
+        self.loselives = False
+        self.lives = 3
 
         self.buttonpressed = 0
 
@@ -137,9 +139,6 @@ class Game:
 
         random.shuffle(self.optionsforquest)
 
-        
-
-
     def buttons (self):
 
             
@@ -202,7 +201,7 @@ class Game:
                 else: 
                     print("inc")
                     self.showbuttons = self.buttonslist[3]
-                
+                    
             elif self.buttonpressed == 2: 
                 if self.input == self.answerforquest :
                     print("correct")
@@ -213,6 +212,7 @@ class Game:
                 else: 
                     print("inc")
                     self.showbuttons2 = self.buttonslist[3]
+                    
             elif self.buttonpressed == 3:
                 if self.input == self.answerforquest :
                     print("correct")
@@ -223,6 +223,8 @@ class Game:
                 else: 
                     print("inc")
                     self.showbuttons3 = self.buttonslist[3]
+                    
+                    
 
 
 
@@ -230,14 +232,17 @@ class Game:
             if self.input == self.answerforquest and self.delayBetweenQuest == 0 :
                 self.delayBetweenQuest = pygame.time.get_ticks()
                 self.questionanswered += 1
- 
-                
                 
             elif self.input == None:
                 
                 pass
-
             
+            if self.input != self.answerforquest and self.input is not None and not self.loselives:
+                self.lives -= 1
+                self.loselives = True
+
+            print (self.lives)
+
             if self.delayBetweenQuest != 0 : #delayy before nect question
                     elapsed = pygame.time.get_ticks() - self.delayBetweenQuest 
 
@@ -271,8 +276,7 @@ class Game:
             c = font.render(str(c), True, "Blue")
             c_rect = c.get_rect(center = (self.showbuttons_3.centerx - 0, self.showbuttons_3.centery + 20))
             self.display_surface.blit(c, c_rect)
-
-                       
+                      
     def questionsfunc(self):
 
          
@@ -329,14 +333,16 @@ class Game:
                  highesttimer = timer
 
             font = pygame.font.Font(None, 50)
-            star = font.render(f"Star: {int(self.questionanswered)}", True, "Blue")
+            star = font.render(f"Star: {int(self.questionanswered)}", True, "Yellow")
 
-
+            font = pygame.font.Font(None, 50)
+            lives = font.render(f"Lives: {int(self.lives)}", True, "Red")
 
             self.display_surface.blit(self.bg, (0,0))
             self.display_surface.blit(self.midg, (0,0))
             self.display_surface.blit(self.foreg, (0,0))
-            self.display_surface.blit(timer, ( 200,20))
+            self.display_surface.blit(lives, ( 10,20))
+            self.display_surface.blit(timer, ( 300,20))
             self.display_surface.blit(highesttimer, ( 600,20))
             self.display_surface.blit(star, ( 1000,20))
 
