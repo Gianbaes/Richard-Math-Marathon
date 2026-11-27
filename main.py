@@ -2,6 +2,7 @@ from config import *
 from sprites import Player, Richard
 import json
 import random
+import time
 
 class Game:
     def __init__(self):
@@ -28,6 +29,7 @@ class Game:
 
 
     def setup(self):
+        
 
         if os.path.exists("score.json"):
             with open("score.json", "r") as highscore :
@@ -206,9 +208,7 @@ class Game:
                 else: 
                     print("inc")
                     self.showbuttons3 = self.buttonslist[3]
-           
-            
-            
+
             
 
 
@@ -256,9 +256,13 @@ class Game:
 
         self.display_surface.blit(image, self.richard.rect)
 
-
+    def nextquest(self):
+        self.setup()
+        self.buttonspressed = 0
+        self.input = None
+    
+        self.questionsfunc()
         
-
     def run (self):
         self.clicking = False
         while self.running:
