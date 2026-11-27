@@ -17,6 +17,7 @@ class Game:
         self.highscore = 0
         self.clicking = False
         self.input = None
+        self.questionanswered = 0
 
         self.buttonpressed = 0
 
@@ -132,15 +133,15 @@ class Game:
         self.answerforquest = self.answers[self.thequestion]
 
         random.shuffle(self.optionsforquest)
+
         
 
 
     def buttons (self):
-        
-                
-            mouse_X, mouse_Y = pygame.mouse.get_pos()
-            
 
+            
+                       
+            mouse_X, mouse_Y = pygame.mouse.get_pos()
 
 
             self.showbuttons = self.buttonslist[0]
@@ -179,13 +180,20 @@ class Game:
             elif mouse_alligned_button3 and self.clicking and self.buttonpressed == 0:
                 self.input = c
                 self.buttonpressed = 3
+
+
+
+
                 
             if self.buttonpressed == 1:   
                 if self.input == self.answerforquest :
                     print("correct")
+                    
+                    
                     self.showbuttons = self.buttonslist[2]
                 elif self.input == None:
                     pass
+                    
                 else: 
                     print("inc")
                     self.showbuttons = self.buttonslist[3]
@@ -193,6 +201,7 @@ class Game:
             elif self.buttonpressed == 2: 
                 if self.input == self.answerforquest :
                     print("correct")
+                                        
                     self.showbuttons2 = self.buttonslist[2]
                 elif self.input == None:
                     pass
@@ -202,12 +211,22 @@ class Game:
             elif self.buttonpressed == 3:
                 if self.input == self.answerforquest :
                     print("correct")
+                                        
                     self.showbuttons3 = self.buttonslist[2]
                 elif self.input == None:
                     pass
                 else: 
                     print("inc")
                     self.showbuttons3 = self.buttonslist[3]
+
+            if self.input == self.answerforquest :
+               
+                self.questionanswered += 1
+                self.nextquest()
+                
+            elif self.input == None:
+                
+                pass
 
             
 
@@ -238,10 +257,7 @@ class Game:
             c_rect = c.get_rect(center = (self.showbuttons_3.centerx - 0, self.showbuttons_3.centery + 20))
             self.display_surface.blit(c, c_rect)
 
-            
-
-            
-                 
+                       
     def questionsfunc(self):
 
          
@@ -258,7 +274,8 @@ class Game:
 
     def nextquest(self):
         self.setup()
-        self.buttonspressed = 0
+        
+        self.buttonpressed = 0
         self.input = None
     
         self.questionsfunc()
@@ -272,6 +289,9 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                             self.clicking = True
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if event.button == 1:
+                            self.clicking = False
                 
 
             dt = self.clock.tick() / 1000
@@ -291,11 +311,15 @@ class Game:
             if self.highscore <= self.score :
                  highesttimer = timer
 
+            font = pygame.font.Font(None, 50)
+            star = font.render(f"Star: {int(self.questionanswered)}", True, "Blue")
+
             self.display_surface.blit(self.bg, (0,0))
             self.display_surface.blit(self.midg, (0,0))
             self.display_surface.blit(self.foreg, (0,0))
             self.display_surface.blit(timer, ( 200,20))
             self.display_surface.blit(highesttimer, ( 600,20))
+            self.display_surface.blit(star, ( 1000,20))
 
             self.player.update(dt)
             self.display_surface.blit(self.player.image, self.player.rect)
