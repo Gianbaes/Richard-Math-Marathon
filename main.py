@@ -30,19 +30,14 @@ class Game:
         self.player = Player((WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 + 100), [])
         self.richard = Richard((WINDOW_WIDTH//2 + 500, WINDOW_HEIGHT//2 + 50), [])
 
-        
-
+        if os.path.exists("score.json"):
+            with open("score.json", "r") as highscore :
+                    self.highscore = json.load(highscore)["HIGH_SCORE"]
 
         self.setup()
 
-
-
     def setup(self):
         
-
-        if os.path.exists("score.json"):
-            with open("score.json", "r") as highscore :
-                  self.highscore = json.load(highscore)["HIGH_SCORE"]
 
         self.bg = pygame.image.load(os.path.join(BASE_DIR, 'data', 'images', 'Background.png')).convert_alpha()
         self.bg = pygame.transform.scale(self.bg,(WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -297,6 +292,9 @@ class Game:
         image =  pygame.transform.scale(image, (250,100))
 
         self.display_surface.blit(image, self.richard.rect)
+
+    def questionCourse(self):
+        pass
 
     def nextquest(self):
         self.setup()
