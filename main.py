@@ -21,6 +21,8 @@ class Game:
         self.delayBetweenQuest = 0
         self.loselives = False
         self.losethegame = False
+        self.state_lost = False
+        self.gamerunning = True
         self.lives = 3
 
         self.buttonpressed = 0
@@ -308,7 +310,10 @@ class Game:
     def lose(self):
             
         clicking = False
+        
         for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         clicking = True
@@ -338,8 +343,6 @@ class Game:
                 game = Game ()
                 game.run()             
             
-            
-                return
 
         pygame.display.update()
         
@@ -361,7 +364,8 @@ class Game:
 
             dt = self.clock.tick() / 1000
 
-            self.score += dt * 2
+            if not self.state_lost:
+                self.score += dt * 2
 
             font = pygame.font.Font(None, 50)
             timer = font.render(f"Score: {int(self.score)}", True, "Blue")
@@ -380,7 +384,8 @@ class Game:
                 self.losethegame = True
 
             if self.losethegame:
-                self.lose()
+                self.state_lost = True
+                
 
             font = pygame.font.Font(None, 50)
             star = font.render(f"Star: {int(self.questionanswered)}", True, "Yellow")
@@ -396,13 +401,17 @@ class Game:
             self.display_surface.blit(highesttimer, ( 600,20))
             self.display_surface.blit(star, ( 1000,20))
 
-            self.player.update(dt)
+            
             self.display_surface.blit(self.player.image, self.player.rect)
             self.display_surface.blit(self.richard.image, self.richard.rect)
 
+            if not self.state_lost:
+                self.player.update(dt)
+                self.buttons()
+                self.questionsfunc()
+            else:
+                self.lose()
 
-            self.buttons()
-            self.questionsfunc()
             
             pygame.display.update()
 
