@@ -20,6 +20,7 @@ class Game:
         self.questionanswered = 0
         self.delayBetweenQuest = 0
         self.loselives = False
+        self.losethegame = False
         self.lives = 3
 
         self.buttonpressed = 0
@@ -237,11 +238,14 @@ class Game:
                 
                 pass
             
-            if self.input != self.answerforquest and self.input is not None and not self.loselives:
+            if self.input != self.answerforquest and self.input is not None and not self.loselives  :
+                
+                self.delayBetweenQuest = pygame.time.get_ticks()
                 self.lives -= 1
+
                 self.loselives = True
 
-            print (self.lives)
+            
 
             if self.delayBetweenQuest != 0 : #delayy before nect question
                     elapsed = pygame.time.get_ticks() - self.delayBetweenQuest 
@@ -249,6 +253,7 @@ class Game:
                     if elapsed >= 1000 :
                             self.nextquest()
                             self.delayBetweenQuest = 0
+                            elapsed = 0
             
 
             self.showbuttons = pygame.transform.scale(self.showbuttons, (300,200))
@@ -296,6 +301,7 @@ class Game:
         
         self.buttonpressed = 0
         self.input = None
+        self.loselives = False
     
         self.questionsfunc()
         
@@ -331,6 +337,12 @@ class Game:
 
             if self.highscore <= self.score :
                  highesttimer = timer
+
+            if self.lives <= 0 :
+                self.losethegame = True
+
+            if self.losethegame:
+                pass
 
             font = pygame.font.Font(None, 50)
             star = font.render(f"Star: {int(self.questionanswered)}", True, "Yellow")
