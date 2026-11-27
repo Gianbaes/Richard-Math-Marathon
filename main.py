@@ -304,6 +304,44 @@ class Game:
         self.loselives = False
     
         self.questionsfunc()
+
+    def lose(self):
+            
+        clicking = False
+        for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        clicking = True
+
+        LOSEdow = pygame.image.load(os.path.join(BASE_DIR,'data', 'images', 'LoseDOW.png')).convert_alpha()
+        LOSEdow = pygame.transform.scale(LOSEdow, (1000, 500))
+
+        mouse_X, mouse_Y = pygame.mouse.get_pos()
+
+
+        font = pygame.font.Font(None, 100)
+        retry_text = font.render(f"Retry", True, "Red")
+        retry_rect = retry_text.get_rect(center =
+                                        (650,510)
+                                    )
+            
+        self.display_surface.blit( LOSEdow, (150,120))
+
+        
+        self.display_surface.blit (retry_text, retry_rect)
+        
+        mouse_alligned_retry = retry_rect.collidepoint((mouse_X, mouse_Y)) 
+            
+        
+
+        if mouse_alligned_retry and clicking == True :
+                game = Game ()
+                game.run()             
+            
+            
+                return
+
+        pygame.display.update()
         
     def run (self):
 
@@ -342,7 +380,7 @@ class Game:
                 self.losethegame = True
 
             if self.losethegame:
-                pass
+                self.lose()
 
             font = pygame.font.Font(None, 50)
             star = font.render(f"Star: {int(self.questionanswered)}", True, "Yellow")
