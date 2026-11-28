@@ -47,9 +47,10 @@ class Game:
                     self.highscore = json.load(highscore)["HIGH_SCORE"]
 
         self.setup()
+        
 
     def setup(self):
-        
+        self.difficultyProgression()        
 
         self.bg = pygame.image.load(os.path.join(BASE_DIR, 'data', 'images', 'Background.png')).convert_alpha()
         self.bg = pygame.transform.scale(self.bg,(WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -385,8 +386,18 @@ class Game:
         else:
                 pass
 
-                
-  
+    def difficultyProgression(self):
+        if self.score >= 30:
+            self.questspeed += 2
+        elif self.score >= 50:
+            self.questspeed += 2
+        elif self.score >= 60:
+            self.questspeed += 0.5
+        elif self.score >= 70:
+            self.questspeed += 0.5
+
+        print(self.questspeed)
+
     def run (self):
 
 
