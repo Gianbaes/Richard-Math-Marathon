@@ -12,23 +12,35 @@ class Game:
 
         self.clock = pygame.time.Clock()
 
-        self.running = True
+        
         self.score = 0
         self.highscore = 0
-        self.clicking = False
+        
         self.input = None
         self.questionanswered = 0
         self.delayBetweenQuest = 0
+        self.buttonpressed = 0
+        self.lives = 3
+        self.questspeed = 5
+
+
+        self.questpos_x = 0
+        self.questpos_y = 0
+
+
+        self.running = True
+        self.clicking = False
         self.loselives = False
         self.losethegame = False
         self.state_lost = False
         self.gamerunning = True
-        self.lives = 3
+        
 
-        self.buttonpressed = 0
+        
 
         self.player = Player((WINDOW_WIDTH//2 - 500, WINDOW_HEIGHT//2 + 100), [])
         self.richard = Richard((WINDOW_WIDTH//2 + 500, WINDOW_HEIGHT//2 + 50), [])
+        self.formula = (self.richard.rect.x, self.richard.rect.y)
 
         if os.path.exists("score.json"):
             with open("score.json", "r") as highscore :
@@ -291,13 +303,14 @@ class Game:
 
         image =  pygame.transform.scale(image, (250,100))
 
-        self.display_surface.blit(image, self.richard.rect)
+        
+        
+        self.display_surface.blit(image, self.formula)
 
-    def questionCourse(self):
-        pass
-
+    
     def nextquest(self):
         self.setup()
+        self.formula = (self.richard.rect.x, self.richard.rect.y)
         
         self.buttonpressed = 0
         self.input = None
@@ -343,7 +356,33 @@ class Game:
             
 
         pygame.display.update()
+
+    def questmovement(self):
         
+       
+
+        target = pygame.math.Vector2(self.player.rect.center)
+        questpos = pygame.math.Vector2(self.formula)
+        newquestpos = pygame.math.Vector2(self.formula)
+        min_d = 25
+        
+
+        distance = questpos.distance_to(target)
+
+        
+
+        if not self.state_lost and not self.input == self.answerforquest and self.input != self.answerforquest and self.input == None  and not self.delayBetweenQuest != 0: 
+
+            if distance > min_d :
+                    direction = (target - questpos)/ distance 
+
+                    newquestpos = questpos + direction * self.questspeed
+
+                    self.formula = newquestpos 
+        else:
+                pass
+
+    
     def run (self):
 
 
@@ -406,6 +445,7 @@ class Game:
             if not self.state_lost:
                 self.player.update(dt)
                 self.buttons()
+                self.questmovement()
                 self.questionsfunc()
             else:
                 self.lose()
