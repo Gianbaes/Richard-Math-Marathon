@@ -70,7 +70,7 @@ class Game:
         
 
         self.questions_equations = {
-            "Ans7.5" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans7.5.png')).convert_alpha(),
+            "Ans12.5" : pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans12.5.png')).convert_alpha(),
             "Ans12" :pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans12.png')).convert_alpha(),
             "Ans13" :pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans13.png')).convert_alpha(),
             "Ans17" :pygame.image.load(os.path.join(BASE_DIR, 'data', 'Questions', 'Equations', 'Ans17.png')).convert_alpha(),
@@ -100,7 +100,7 @@ class Game:
         
         
         self.options = {
-            "Ans7.5" : [7.5,9,5],
+            "Ans12.5" : [12.5,9,5],
             "Ans12" : [12,5,8],
             "Ans13" : [8,9,13],
             "Ans17" : [15,16,17],
@@ -118,7 +118,7 @@ class Game:
         }
 
         self.answers = {
-            "Ans7.5" : 7.5,
+            "Ans12.5" : 12.5,
             "Ans12" : 12,
             "Ans13" : 13,
             "Ans17" : 17,
@@ -306,8 +306,7 @@ class Game:
         
         
         self.display_surface.blit(image, self.formula)
-
-    
+  
     def nextquest(self):
         self.setup()
         self.formula = (self.richard.rect.x, self.richard.rect.y)
@@ -381,8 +380,7 @@ class Game:
                     self.formula = newquestpos 
         else:
                 pass
-
-    
+  
     def run (self):
 
 
@@ -407,15 +405,16 @@ class Game:
             font = pygame.font.Font(None, 50)
             timer = font.render(f"Score: {int(self.score)}", True, "Blue")
 
-            with open("score.json", "w") as highscore :
-                        json.dump({"HIGH_SCORE" : self.score}, highscore)
+            
                        
 
             font = pygame.font.Font(None, 50)
             highesttimer = font.render(f"HighScore: {int(self.highscore)}", True, "Blue")
 
             if self.highscore <= self.score :
-                 highesttimer = timer
+                self.highscore = self.score
+                with open("score.json", "w") as highscore :
+                    json.dump({"HIGH_SCORE" : self.score}, highscore)
 
             if self.lives <= 0 :
                 self.losethegame = True
