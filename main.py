@@ -378,8 +378,14 @@ class Game:
                     newquestpos = questpos + direction * self.questspeed
 
                     self.formula = newquestpos 
+        if distance <= min_d :
+                self.lives -= 1
+                self.nextquest()
+            
         else:
                 pass
+
+                
   
     def run (self):
 
